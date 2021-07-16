@@ -62,32 +62,32 @@ func GetSport_scoreInfoList(info request.Sport_scoreSearch) (err error, list int
     if info.Sex != nil {
         db = db.Where("`sex` = ?",info.Sex)
     }
-    if info.Total_score != 0 {
-        db = db.Where("`total_score` = ?",info.Total_score)
+    if info.TotalScore != 0 {
+        db = db.Where("`total_score` = ?",info.TotalScore)
     }
-    if info.Process_evaluation != 0 {
-        db = db.Where("`process_evaluation` = ?",info.Process_evaluation)
+    if info.ProcesseValuation != 0 {
+        db = db.Where("`processe_valuation` = ?",info.ProcesseValuation)
     }
     if info.Grade != "" {
         db = db.Where("`grade` = ?",info.Grade)
     }
-    if info.Item_one != "" {
-        db = db.Where("`item_one` = ?",info.Item_one)
+    if info.Itemone != "" {
+        db = db.Where("`itemone` = ?",info.Itemone)
     }
-    if info.Grade_one != 0 {
-        db = db.Where("`grade_one` = ?",info.Grade_one)
+    if info.Gradeone != 0 {
+        db = db.Where("`gradeone` = ?",info.Gradeone)
     }
-    if info.Score_one != 0 {
-        db = db.Where("`score_one` = ?",info.Score_one)
+    if info.ScoreOne != 0 {
+        db = db.Where("`score_one` = ?",info.ScoreOne)
     }
-    if info.Item_two != "" {
-        db = db.Where("`item_two` = ?",info.Item_two)
+    if info.ItemTwo != "" {
+        db = db.Where("`item_two` = ?",info.ItemTwo)
     }
-    if info.Item_three != "" {
-        db = db.Where("`item_three` = ?",info.Item_three)
+    if info.ItemThree != "" {
+        db = db.Where("`item_three` = ?",info.ItemThree)
     }
-    if info.Score_three != 0 {
-        db = db.Where("`score_three` = ?",info.Score_three)
+    if info.ScoreThree != 0 {
+        db = db.Where("`score_three` = ?",info.ScoreThree)
     }
 	err = db.Count(&total).Error
 	err = db.Limit(limit).Offset(offset).Find(&sport_scores).Error

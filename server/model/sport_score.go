@@ -9,22 +9,22 @@ import (
 // 如果含有time.Time 请自行import time包
 type Sport_score struct {
       global.GVA_MODEL
-      School  string `json:"school" form:"school" gorm:"column:school;comment:学校;type:varchar;"`
+      School  string `json:"school" form:"school" gorm:"column:school;comment:学校"`
       Class  string `json:"class" form:"class" gorm:"column:class;comment:班级"`
       Testid  string `json:"testid" form:"testid" gorm:"column:testid;comment:考号"`
       Sex  *bool `json:"sex" form:"sex" gorm:"column:sex;comment:性别;type:tinyint"`
-      Total_score  float64 `json:"total_score" form:"total_score" gorm:"column:total_score;comment:总分"`
-      Process_evaluation  float64 `json:"process_evaluation" form:"process_evaluation" gorm:"column:process_evaluation;comment:过程评价;type:float;"`
+      TotalScore  float64 `json:"totalScore" form:"totalScore" gorm:"column:total_score;comment:总分"`
+      ProcesseValuation  float64 `json:"processeValuation" form:"processeValuation" gorm:"column:processe_valuation;comment:过程评价"`
       Grade  string `json:"grade" form:"grade" gorm:"column:grade;comment:等级"`
-      Item_one  string `json:"item_one" form:"item_one" gorm:"column:item_one;comment:一类项目"`
-      Grade_one  float64 `json:"grade_one" form:"grade_one" gorm:"column:grade_one;comment:成绩1;type:float;"`
-      Score_one  float64 `json:"score_one" form:"score_one" gorm:"column:score_one;comment:分数1;type:float;"`
-      Item_two  string `json:"item_two" form:"item_two" gorm:"column:item_two;comment:二类项目"`
-      Grade_two  float64 `json:"grade_two" form:"grade_two" gorm:"column:grade_two;comment:成绩2;type:float;"`
-      Score_two  float64 `json:"score_two" form:"score_two" gorm:"column:score_two;comment:分数2;type:float;"`
-      Item_three  string `json:"item_three" form:"item_three" gorm:"column:item_three;comment:三类项目"`
-      Grade_three  float64 `json:"grade_three" form:"grade_three" gorm:"column:grade_three;comment:成绩3;type:float;"`
-      Score_three  float64 `json:"score_three" form:"score_three" gorm:"column:score_three;comment:分数3;type:float;"`
+      Itemone  string `json:"itemone" form:"itemone" gorm:"column:itemone;comment:一类项目"`
+      Gradeone  float64 `json:"gradeone" form:"gradeone" gorm:"column:gradeone;comment:成绩1"`
+      ScoreOne  float64 `json:"scoreOne" form:"scoreOne" gorm:"column:score_one;comment:分数1;type:float;"`
+      ItemTwo  string `json:"itemTwo" form:"itemTwo" gorm:"column:item_two;comment:二类项目"`
+      GradeTwo  float64 `json:"gradeTwo" form:"gradeTwo" gorm:"column:grade_two;comment:成绩2"`
+      ScoreTwo  float64 `json:"scoreTwo" form:"scoreTwo" gorm:"column:score_two;comment:分数2;type:float;"`
+      ItemThree  string `json:"itemThree" form:"itemThree" gorm:"column:item_three;comment:三类项目"`
+      GradeThree  float64 `json:"gradeThree" form:"gradeThree" gorm:"column:grade_three;comment:成绩3;type:float;"`
+      ScoreThree  float64 `json:"scoreThree" form:"scoreThree" gorm:"column:score_three;comment:分数3;type:float;"`
 }
 
 
