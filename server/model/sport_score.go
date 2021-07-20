@@ -12,6 +12,7 @@ type Sport_score struct {
       School  string `json:"school" form:"school" gorm:"column:school;comment:学校"`
       Class  string `json:"class" form:"class" gorm:"column:class;comment:班级"`
       Testid  string `json:"testid" form:"testid" gorm:"column:testid;comment:考号"`
+      Name  string `json:"name" form:"name" gorm:"column:name;comment:姓名"`
       Sex  *bool `json:"sex" form:"sex" gorm:"column:sex;comment:性别;type:tinyint"`
       TotalScore  float64 `json:"totalScore" form:"totalScore" gorm:"column:total_score;comment:总分"`
       ProcesseValuation  float64 `json:"processeValuation" form:"processeValuation" gorm:"column:processe_valuation;comment:过程评价"`

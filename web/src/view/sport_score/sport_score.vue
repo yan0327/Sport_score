@@ -11,6 +11,9 @@
         <el-form-item label="考号">
           <el-input placeholder="搜索条件" v-model="searchInfo.testid" />
         </el-form-item>    
+        <el-form-item label="姓名">
+          <el-input placeholder="搜索条件" v-model="searchInfo.name" />
+        </el-form-item>    
             <el-form-item label="性别" prop="sex">
             <el-select v-model="searchInfo.sex" clear placeholder="请选择">
                 <el-option
@@ -82,6 +85,7 @@
       <el-table-column label="学校" prop="school" width="120" /> 
       <el-table-column label="班级" prop="class" width="120" /> 
       <el-table-column label="考号" prop="testid" width="120" /> 
+      <el-table-column label="姓名" prop="name" width="120" /> 
       <el-table-column label="性别" prop="sex" width="120">
         <template slot-scope="scope">{{scope.row.sex|formatBoolean}}</template>
       </el-table-column>
@@ -126,6 +130,10 @@
         <el-form-item label="考号:">
       
           <el-input v-model="formData.testid" clearable placeholder="请输入" />
+      </el-form-item>
+        <el-form-item label="姓名:">
+      
+          <el-input v-model="formData.name" clearable placeholder="请输入" />
       </el-form-item>
         <el-form-item label="性别:">
       
@@ -214,6 +222,7 @@ export default {
         school: '',
           class: '',
           testid: '',
+          name: '',
           sex: false,
           totalScore: 0,
           processeValuation: 0,
@@ -256,7 +265,7 @@ export default {
   // 条件搜索前端看此方法
     onSubmit() {
       this.page = 1
-      this.pageSize = 10   
+      this.pageSize = 10    
       if (this.searchInfo.sex === ""){
         this.searchInfo.sex=null
       }              
@@ -314,6 +323,7 @@ export default {
         school: '',
           class: '',
           testid: '',
+          name: '',
           sex: false,
           totalScore: 0,
           processeValuation: 0,

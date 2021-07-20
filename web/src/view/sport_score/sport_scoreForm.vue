@@ -13,6 +13,10 @@
     <el-input v-model="formData.testid" clearable placeholder="请输入" />
     </el-form-item>
     
+      <el-form-item label="姓名:">
+    <el-input v-model="formData.name" clearable placeholder="请输入" />
+    </el-form-item>
+    
       <el-form-item label="性别:">
     <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" v-model="formData.sex" clearable ></el-switch>
     </el-form-item>
@@ -97,6 +101,7 @@ export default {
             school: '',
             class: '',
             testid: '',
+            name: '',
             sex: false,
             totalScore: 0,
             processeValuation: 0,

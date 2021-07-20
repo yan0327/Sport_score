@@ -59,6 +59,9 @@ func GetSport_scoreInfoList(info request.Sport_scoreSearch) (err error, list int
     if info.Testid != "" {
         db = db.Where("`testid` = ?",info.Testid)
     }
+    if info.Name != "" {
+        db = db.Where("`name` = ?",info.Name)
+    }
     if info.Sex != nil {
         db = db.Where("`sex` = ?",info.Sex)
     }
