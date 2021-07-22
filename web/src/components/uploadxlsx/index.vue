@@ -131,10 +131,11 @@ export default {
         name: this.form.name,
         suffix: this.form.suffix,
         merges: [
+            /*
           { s: { r: 0, c: 0 }, e: { r: 1, c: 0 } },
           { s: { r: 0, c: 1 }, e: { r: 0, c: 2 } },
           { s: { r: 0, c: 3 }, e: { r: 0, c: 4 } },
-          { s: { r: 0, c: 5 }, e: { r: 1, c: 5 } }
+          { s: { r: 0, c: 5 }, e: { r: 1, c: 5 } }*/
         ]
       });
       this.form = {
