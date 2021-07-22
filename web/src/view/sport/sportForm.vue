@@ -1,5 +1,6 @@
 <template>
   <div>
+    <uploadxlsx />
     <el-form :model="formData" label-position="right" label-width="80px">
       <el-form-item label="学校:">
     <el-input v-model="formData.school" clearable placeholder="请输入" />
@@ -91,9 +92,13 @@ import {
   findSport
 } from '@/api/sport' //  此处请自行替换地址
 import infoList from '@/mixins/infoList'
+import uploadxlsx from '@/components/uploadxlsx'
 export default {
   name: 'Sport',
   mixins: [infoList],
+  components:{
+    uploadxlsx
+  },
   data() {
     return {
       type: '',
@@ -106,13 +111,13 @@ export default {
             totalScore: 0,
             processeValuation: 0,
             grade: '',
-            itemone: '',
+            itemone: '50米跑',
             gradeone: 0,
             scoreOne: 0,
-            itemTwo: '',
+            itemTwo: '跳绳',
             gradeTwo: 0,
             scoreTwo: 0,
-            itemThree: '',
+            itemThree: '篮球运球',
             gradeThree: 0,
             scoreThree: 0,
             
