@@ -1,5 +1,76 @@
 import XLSX, { utils } from 'xlsx'
 
+export let character = {
+    school: {
+        text:"学校",
+        type:'string'
+    },
+    class: {
+        text:"班级",
+        type:'string'
+    },
+    testid: {
+        text:"考号",
+        type:'string'
+    },
+    name: {
+        text:"姓名",
+        type:'string'
+    },
+    sex: {
+        text:"性别",
+        type:'string'
+    },
+    totalScore: {
+        text:"总分",
+        type:'number'
+    },
+    processeValuation: {
+        text:"过程评价分",
+        type:'number'
+    },
+    grade: {
+        text:"等级",
+        type:'string'
+    },
+    itemone: {
+        text:"一类项目",
+        type:'string'
+    },
+    gradeone: {
+        text:"成绩",
+        type:'number'       
+    },
+    scoreOne: {
+        text:"分数",
+        type:'number'
+    },
+    itemTwo: {
+        text:"二类项目",
+        type:'string'
+    },
+    gradeTwo: {
+        text:"成绩1",
+        type:'number'
+    },
+    scoreTwo: {
+        text:"分数1",
+        type:'number'
+    },
+    itemThree: {
+        text:"三类项目",
+        type:'string'
+    },
+    gradeThree: {
+        text:"成绩2",
+        type:'number'
+    },
+    scoreThree: {
+        text:"分数2",
+        type:'number'
+    }
+};
+
 const EXCEL = {
     // 导出Excel方法
     /**
@@ -56,9 +127,25 @@ const EXCEL = {
             workSheet = workBook.Sheets[workBook.SheetNames[0]],
             content = utils.sheet_to_json(workSheet),
             data = {};
-        data.title = Object.keys(content[0]);
-        data.body = content;
-        return data;
+            let arr=[];
+            content.forEach(item => {
+                let obj={};
+                for (let key in character){
+                    let v=character[key],
+                    text = v.text,
+                    type = v.type;
+                    v = item[text]||"";
+                    type ==="string" ? (v = String(v)) : null;
+                    type === "number" ? (v = Number(v)) : null;
+                    obj[key] = v;
+                }
+                arr.push(obj);
+            });
+            //console.log(arr)
+        //data.title = Object.keys(content[0]);
+        //data.title = arr;
+        //data.body = content;
+        return arr;
     },
     /**
      * @description              本地读取文件的方法

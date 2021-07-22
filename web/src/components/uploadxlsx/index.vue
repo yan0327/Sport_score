@@ -49,6 +49,10 @@
 </template>
 
 <script>
+import {
+  createSport,
+} from '@/api/sport' //  此处请自行替换地址
+import infoList from '@/mixins/infoList'
 import untils from "@/utils/excel";
 export default {
   name: 'Uploadxlsx',
@@ -149,9 +153,18 @@ export default {
       el.click();
     },
     async importFile() {
+        let res
       const el = document.getElementById("file");
       const file = el.files[0];
       var data = await untils.importFromLocal(file);
+      
+      var n = 0;
+      for(;n < data.length;n++){
+        res = await createSport(data[n])
+      }
+      console.log(data)
+      console.log(data[0])
+      console.log(data[1])
       this.title = data.title;
       this.tableData = data.body;
       el.value = "";

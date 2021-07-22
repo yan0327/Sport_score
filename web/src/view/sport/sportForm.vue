@@ -151,6 +151,7 @@ export default {
           res = await createSport(this.formData)
           break
       }
+      console.log(this.formData)
       if (res.code === 0) {
         this.$message({
           type: 'success',
