@@ -142,9 +142,9 @@ const EXCEL = {
                 arr.push(obj);
             });
             //console.log(arr)
-        //data.title = Object.keys(content[0]);
+        arr.title = Object.keys(content[0]);
         //data.title = arr;
-        //data.body = content;
+        arr.body = content;
         return arr;
     },
     /**

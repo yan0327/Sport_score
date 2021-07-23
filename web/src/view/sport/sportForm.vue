@@ -1,7 +1,9 @@
 <template>
   <div>
-    <uploadxlsx />
+      <uploadxlsx />
+      
     <el-form :model="formData" label-position="right" label-width="80px">
+      
       <el-form-item label="学校:">
     <el-input v-model="formData.school" clearable placeholder="请输入" />
     </el-form-item>

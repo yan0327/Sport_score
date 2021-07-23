@@ -14,18 +14,6 @@
           align="center"
         ></el-table-column>
       </template>
-      <template v-else-if="title.length == 0">
-        <el-table-column prop="date" label="日期" align="center"></el-table-column>
-        <el-table-column label="支出明细" align="center">
-          <el-table-column prop="prop1" label="支出项" align="center"></el-table-column>
-          <el-table-column prop="prop2" label="金额" align="center"></el-table-column>
-        </el-table-column>
-        <el-table-column label="收入" align="center">
-          <el-table-column prop="prop3" label="收入项" align="center"></el-table-column>
-          <el-table-column prop="prop4" label="金额" align="center"></el-table-column>
-        </el-table-column>
-        <el-table-column prop="prop5" label="每日支出金额" align="center"></el-table-column>
-      </template>
     </el-table>
     <el-dialog title="导出参数" :visible.sync="dialogFormVisible" width="30%">
       <el-form :model="form" :rules="rules">
@@ -52,7 +40,6 @@
 import {
   createSport,
 } from '@/api/sport' //  此处请自行替换地址
-import infoList from '@/mixins/infoList'
 import untils from "@/utils/excel";
 export default {
   name: 'Uploadxlsx',
@@ -63,38 +50,6 @@ export default {
     return {
       title: [],
       tableData: [
-        {
-          date: "4-1",
-          prop1: "吃饭",
-          prop2: 28,
-          prop3: "",
-          prop4: "",
-          prop5: 28
-        },
-        {
-          date: "4-2",
-          prop1: "吃饭",
-          prop2: 28,
-          prop3: "",
-          prop4: "",
-          prop5: 28
-        },
-        {
-          date: "4-3",
-          prop1: "吃饭",
-          prop2: 28,
-          prop3: "",
-          prop4: "",
-          prop5: 28
-        },
-        {
-          date: "4-4",
-          prop1: "吃饭",
-          prop2: 28,
-          prop3: "",
-          prop4: "",
-          prop5: 28
-        }
       ],
       dialogFormVisible: false,
       form: {
@@ -113,33 +68,11 @@ export default {
         this.$message.error("请先输入文件名");
         return false;
       }
-      /* const title = [["日期", "支出明细",null, "收入",null, "金额"],[null,"支出项","金额","收入项","金额",null]];
-      const body = [];
-      this.tableData.map((item, index) => {
-        body[index] = [item.date, item.prop1, item.prop2, item.prop3,item.prop4,item.prop5];
-      });
-      untils.exportFromArray({
-        title,
-        body,
-        name: this.form.name,
-        suffix: this.form.suffix,
-        merges: [
-          { s: { r: 0, c: 0 }, e: { r: 1, c: 0 } },
-          { s: { r: 0, c: 1 }, e: { r: 0, c: 2 } },
-          { s: { r: 0, c: 3 }, e: { r: 0, c: 4 } },
-          { s: { r: 0, c: 5 }, e: { r: 1, c: 5 } }
-        ]
-      }); */
       untils.exportFromTable({
         id: "table",
         name: this.form.name,
         suffix: this.form.suffix,
         merges: [
-            /*
-          { s: { r: 0, c: 0 }, e: { r: 1, c: 0 } },
-          { s: { r: 0, c: 1 }, e: { r: 0, c: 2 } },
-          { s: { r: 0, c: 3 }, e: { r: 0, c: 4 } },
-          { s: { r: 0, c: 5 }, e: { r: 1, c: 5 } }*/
         ]
       });
       this.form = {
@@ -162,9 +95,6 @@ export default {
       for(;n < data.length;n++){
         res = await createSport(data[n])
       }
-      console.log(data)
-      console.log(data[0])
-      console.log(data[1])
       this.title = data.title;
       this.tableData = data.body;
       el.value = "";
