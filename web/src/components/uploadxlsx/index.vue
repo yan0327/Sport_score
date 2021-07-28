@@ -1,10 +1,10 @@
 <template>
   <div class="hello">
     <div>
-      <el-button type="primary" id="import" class="clearfix" @click="selectFile">导入</el-button>
-      <el-button type="primary" id="export" class="clearfix" @click="dialogFormVisible=true">导出</el-button>
+      <el-button id="import" type="primary"  class="clearfix" @click="selectFile">导入</el-button>
+      <el-button id="export" type="primary"  class="clearfix" @click="dialogFormVisible=true">导出</el-button>
     </div>
-    <el-table :data="tableData" border style="width: 100%" id="table">
+    <el-table id="table" :data="tableData" border style="width: 100%" >
       <template v-if="title.length>0">
         <el-table-column
           :prop="item"
@@ -69,38 +69,37 @@ export default {
         return false;
       }
       untils.exportFromTable({
-        id: "table",
+        id: 'table',
         name: this.form.name,
         suffix: this.form.suffix,
         merges: [
         ]
       });
       this.form = {
-        name: "",
-        suffix: "csv"
+        name: '',
+        suffix: 'csv'
       };
       this.dialogFormVisible = false;
     },
     selectFile() {
-      const el = document.getElementById("file");
-      el.click();
+      const el = document.getElementById("file")
+      el.click()
     },
     async importFile() {
         let res
-      const el = document.getElementById("file");
-      const file = el.files[0];
-      var data = await untils.importFromLocal(file);
-      
+      const el = document.getElementById("file")
+      const file = el.files[0]
+      var data = await untils.importFromLocal(file)
       var n = 0;
-      for(;n < data.length;n++){
+      for (; n < data.length; n++) {
         res = await createSport(data[n])
       }
-      this.title = data.title;
-      this.tableData = data.body;
-      el.value = "";
+      this.title = data.title
+      this.tableData = data.body
+      el.value = ''
     }
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
