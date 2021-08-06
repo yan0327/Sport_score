@@ -1,7 +1,6 @@
 <template>
   <div>
       <uploadxlsx />
-      
     <el-form :model="formData" label-position="right" label-width="80px">
       
       <el-form-item label="学校:">
@@ -95,15 +94,18 @@ import {
 } from '@/api/sport' //  此处请自行替换地址
 import infoList from '@/mixins/infoList'
 import uploadxlsx from '@/components/uploadxlsx'
+
 export default {
   name: 'Sport',
   mixins: [infoList],
   components:{
+    VueMetamask,
     uploadxlsx
   },
   data() {
     return {
       type: '',
+      msg: "This is demo net work",
       formData: {
             school: '',
             class: '',
@@ -163,6 +165,9 @@ export default {
     },
     back() {
       this.$router.go(-1)
+    },
+    onComplete(data){
+      console.log('data', data);
     }
   }
 }
