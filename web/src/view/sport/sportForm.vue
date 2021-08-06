@@ -99,7 +99,6 @@ export default {
   name: 'Sport',
   mixins: [infoList],
   components:{
-    VueMetamask,
     uploadxlsx
   },
   data() {
