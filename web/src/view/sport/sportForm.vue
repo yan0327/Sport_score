@@ -1,7 +1,7 @@
 <template>
   <div>
       <uploadxlsx />
-    <el-form :model="formData" label-position="right" label-width="80px">
+    <el-form :model="formData" label-position="right" label-width="160px">
       
       <el-form-item label="学校:">
     <el-input v-model="formData.school" clearable placeholder="请输入" />
@@ -78,6 +78,15 @@
     
       <el-input-number v-model="formData.scoreThree" :precision="2" clearable></el-input-number>
     </el-form-item>
+
+    <el-form-item label="体育成绩哈希值:">
+    <el-input v-model="formData.hash256" clearable placeholder="请输入" />
+    </el-form-item>
+
+    <el-form-item label="交易哈希:">
+    <el-input v-model="formData.transhash" clearable placeholder="请输入" />
+    </el-form-item>
+
     <el-form-item>
         <el-button size="mini" type="primary" @click="save">保存</el-button>
         <el-button size="mini" type="primary" @click="back">返回</el-button>
@@ -94,6 +103,7 @@ import {
 } from '@/api/sport' //  此处请自行替换地址
 import infoList from '@/mixins/infoList'
 import uploadxlsx from '@/components/uploadxlsx'
+import Web3 from "web3";
 
 export default {
   name: 'Sport',
@@ -123,6 +133,8 @@ export default {
             itemThree: '篮球运球',
             gradeThree: 0,
             scoreThree: 0,
+            hash256: '',
+            transhash: '',
             
       }
     }
@@ -168,7 +180,42 @@ export default {
     onComplete(data){
       console.log('data', data);
     }
-  }
+  },
+  async mounted() {
+    if (window.ethereum) {
+      window.web3 = new Web3(ethereum);
+      try {
+        const accounts = await ethereum.enable();
+        console.log(accounts);
+        const provider = window['ethereum']
+        console.log(provider)
+        console.log(provider.chainId)
+        //this.web3TimerCheck(window.web3);
+        const web3 = new Web3(provider)
+        console.log(web3)
+        window.defaultAccount = accounts[0].toLowerCase()
+        console.log(window.defaultAccount)
+        
+        var abi2 = require("./contract_abi2.json");
+        const address2 = "0xb1d17b075d13ee1ec7a686d692809182ac9f19f0"
+        window.myContract2 = new web3.eth.Contract(abi2.abi, address2)
+        console.log(window.myContract2)
+
+
+      } catch (error) {
+        console.log(error)
+      }
+    } else if (window.web3) {
+      window.web3 = new Web3(web3.currentProvider);
+      //this.web3TimerCheck(window.web3);
+    } else {
+      this.web3 = null;
+      this.Log(this.MetamaskMsg.METAMASK_NOT_INSTALL, "NO_INSTALL_METAMASK");
+      console.error(
+        "Non-Ethereum browser detected. You should consider trying MetaMask!"
+      );
+    }
+  },
 }
 </script>
 

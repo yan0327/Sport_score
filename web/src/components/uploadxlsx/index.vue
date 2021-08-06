@@ -90,6 +90,7 @@ export default {
       const el = document.getElementById("file")
       const file = el.files[0]
       var data = await untils.importFromLocal(file)
+      console.log(data)
       var n = 0;
       for (; n < data.length; n++) {
         res = await createSport(data[n])

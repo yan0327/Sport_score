@@ -52,7 +52,14 @@
         </el-form-item>    
         <el-form-item label="分数3">
           <el-input placeholder="搜索条件" v-model="searchInfo.scoreThree" />
-        </el-form-item>    
+        </el-form-item> 
+        <el-form-item label="体育成绩哈希值">
+          <el-input placeholder="搜索条件" v-model="searchInfo.hash256" />
+        </el-form-item> 
+        <el-form-item label="交易哈希">
+          <el-input placeholder="搜索条件" v-model="searchInfo.transhash" />
+        </el-form-item> 
+
         <el-form-item>
           <el-button size="mini" type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
           <el-button size="mini" type="primary" icon="el-icon-plus" @click="openDialog">新增</el-button>
@@ -96,7 +103,10 @@
       <el-table-column label="分数2" prop="scoreTwo" width="120" /> 
       <el-table-column label="三类项目" prop="itemThree" width="120" /> 
       <el-table-column label="成绩3" prop="gradeThree" width="120" /> 
-      <el-table-column label="分数3" prop="scoreThree" width="120" /> <el-table-column label="按钮组">
+      <el-table-column label="分数3" prop="scoreThree" width="120" /> 
+      <el-table-column label="体育成绩哈希值" prop="hash256" width="240" /> 
+      <el-table-column label="交易哈希" prop="transhash" width="240" /> 
+      <el-table-column label="按钮组">
         <template slot-scope="scope">
           <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="updateSport(scope.row)">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>
@@ -183,6 +193,14 @@
       
           <el-input-number v-model="formData.scoreThree" :precision="2" clearable />
        </el-form-item>
+        <el-form-item label="体育成绩哈希值:">
+        
+            <el-input v-model="formData.hash256" clearable placeholder="请输入" />
+        </el-form-item>
+        <el-form-item label="交易哈希:">
+        
+            <el-input v-model="formData.transhash" clearable placeholder="请输入" />
+        </el-form-item>
      </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="closeDialog">取 消</el-button>
@@ -232,6 +250,8 @@ export default {
           itemThree: '',
           gradeThree: 0,
           scoreThree: 0,
+          hash256: '',
+          transhash: '',
           
       }
     }
@@ -330,6 +350,8 @@ export default {
           itemThree: '',
           gradeThree: 0,
           scoreThree: 0,
+          hash256: '',
+          transhash: '',
           
       }
     },

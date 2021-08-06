@@ -68,6 +68,14 @@ export let character = {
     scoreThree: {
         text:"分数2",
         type:'number'
+    },
+    hash256: {
+        text:"体育成绩哈希值",
+        type:'string'
+    },
+    transHash: {
+        text:"交易哈希",
+        type:'string'
     }
 };
 
@@ -128,6 +136,7 @@ const EXCEL = {
             content = utils.sheet_to_json(workSheet),
             data = {};
             let arr=[];
+            let i = 0;
             content.forEach(item => {
                 let obj={};
                 for (let key in character){
@@ -139,9 +148,34 @@ const EXCEL = {
                     type === "number" ? (v = Number(v)) : null;
                     obj[key] = v;
                 }
+                const str = JSON.stringify(obj);
+                //console.log(str);
+                var strs = web3.utils.sha3(str);
+                window.myContract2.methods.saveEvidence(strs).send({from:window.defaultAccount})
+                .on('transactionHash',(transactionHash)=>{
+                    /*return  new Promise((resolve,reject) => {
+                        resolve(transactionHash)
+                    }).then(resolve => {
+                        
+                    })*/
+                    console.log(transactionHash)
+                    //obj.TransHash = transactionHash;
+                    //console.log('transactionHash', obj)
+                })
+                .on('receipt',(receipt)=>{
+                    console.log({ receipt:receipt })
+                })
+                .on('error',(error, receipt)=>{
+                    console.log({ error:error, receipt:receipt})
+                })
+                content[i]["体育成绩哈希值"] = strs;
+                //content[i]["交易哈希"] = transactionHash;
+                obj.hash256 = strs;
+                //console.log(obj);
                 arr.push(obj);
+                i++
             });
-            //console.log(arr)
+            console.log(arr)
         arr.title = Object.keys(content[0]);
         //data.title = arr;
         arr.body = content;
