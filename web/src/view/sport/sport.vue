@@ -124,7 +124,7 @@
       @size-change="handleSizeChange"
     />
     <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="弹窗操作">
-      <el-form :model="formData" label-position="right" label-width="80px">
+      <el-form :model="formData" label-position="right" label-width="120px">
         <el-form-item label="学校:">
       
           <el-input v-model="formData.school" clearable placeholder="请输入" />
@@ -324,6 +324,7 @@ export default {
     },
     async updateSport(row) {
       const res = await findSport({ ID: row.ID })
+      console.log(row)
       this.type = 'update'
       if (res.code === 0) {
         this.formData = res.data.resport

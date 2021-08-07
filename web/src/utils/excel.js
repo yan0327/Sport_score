@@ -1,5 +1,9 @@
 import XLSX, { utils } from 'xlsx'
-
+//import sport from '@/view/sport'
+import {
+    updateSport,
+    findSportm
+  } from '@/api/sport'
 export let character = {
     school: {
         text:"学校",
@@ -158,12 +162,17 @@ const EXCEL = {
                     }).then(resolve => {
                         
                     })*/
-                    console.log(transactionHash)
+                    console.log('transactionHash', transactionHash)
                     //obj.TransHash = transactionHash;
                     //console.log('transactionHash', obj)
                 })
                 .on('receipt',(receipt)=>{
                     console.log({ receipt:receipt })
+                    //console.log({ receipt:events.transactionHash })
+                    let storagehash = receipt.transactionHash;
+                    console.log(storagehash);
+                    let findhash = receipt.events.SaveEvidence.returnValues[1];
+                    console.log(findhash);
                 })
                 .on('error',(error, receipt)=>{
                     console.log({ error:error, receipt:receipt})
