@@ -2,12 +2,13 @@ package v1
 
 import (
 	"gin-vue-admin/global"
-    "gin-vue-admin/model"
-    "gin-vue-admin/model/request"
-    "gin-vue-admin/model/response"
-    "gin-vue-admin/service"
-    "github.com/gin-gonic/gin"
-    "go.uber.org/zap"
+	"gin-vue-admin/model"
+	"gin-vue-admin/model/request"
+	"gin-vue-admin/model/response"
+	"gin-vue-admin/service"
+
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 // CreateSport 创建Sport
@@ -23,7 +24,7 @@ func CreateSport(c *gin.Context) {
 	var sport model.Sport
 	_ = c.ShouldBindJSON(&sport)
 	if err := service.CreateSport(sport); err != nil {
-        global.GVA_LOG.Error("创建失败!", zap.Any("err", err))
+		global.GVA_LOG.Error("创建失败!", zap.Any("err", err))
 		response.FailWithMessage("创建失败", c)
 	} else {
 		response.OkWithMessage("创建成功", c)
@@ -43,7 +44,7 @@ func DeleteSport(c *gin.Context) {
 	var sport model.Sport
 	_ = c.ShouldBindJSON(&sport)
 	if err := service.DeleteSport(sport); err != nil {
-        global.GVA_LOG.Error("删除失败!", zap.Any("err", err))
+		global.GVA_LOG.Error("删除失败!", zap.Any("err", err))
 		response.FailWithMessage("删除失败", c)
 	} else {
 		response.OkWithMessage("删除成功", c)
@@ -61,9 +62,9 @@ func DeleteSport(c *gin.Context) {
 // @Router /sport/deleteSportByIds [delete]
 func DeleteSportByIds(c *gin.Context) {
 	var IDS request.IdsReq
-    _ = c.ShouldBindJSON(&IDS)
+	_ = c.ShouldBindJSON(&IDS)
 	if err := service.DeleteSportByIds(IDS); err != nil {
-        global.GVA_LOG.Error("批量删除失败!", zap.Any("err", err))
+		global.GVA_LOG.Error("批量删除失败!", zap.Any("err", err))
 		response.FailWithMessage("批量删除失败", c)
 	} else {
 		response.OkWithMessage("批量删除成功", c)
@@ -83,7 +84,7 @@ func UpdateSport(c *gin.Context) {
 	var sport model.Sport
 	_ = c.ShouldBindJSON(&sport)
 	if err := service.UpdateSport(sport); err != nil {
-        global.GVA_LOG.Error("更新失败!", zap.Any("err", err))
+		global.GVA_LOG.Error("更新失败!", zap.Any("err", err))
 		response.FailWithMessage("更新失败", c)
 	} else {
 		response.OkWithMessage("更新成功", c)
@@ -103,7 +104,27 @@ func FindSport(c *gin.Context) {
 	var sport model.Sport
 	_ = c.ShouldBindQuery(&sport)
 	if err, resport := service.GetSport(sport.ID); err != nil {
-        global.GVA_LOG.Error("查询失败!", zap.Any("err", err))
+		global.GVA_LOG.Error("查询失败!", zap.Any("err", err))
+		response.FailWithMessage("查询失败", c)
+	} else {
+		response.OkWithData(gin.H{"resport": resport}, c)
+	}
+}
+
+// FindSportByHash 用体育成绩哈希值查询Sport
+// @Tags Sport
+// @Summary 用体育成绩哈希值查询Sport
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body model.Sport true "用id查询Sport"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
+// @Router /sport/findSport [get]
+func FindSportByHash(c *gin.Context) {
+	var sport model.Sport
+	_ = c.ShouldBindQuery(&sport)
+	if err, resport := service.GetSport(sport.Hash256); err != nil {
+		global.GVA_LOG.Error("查询失败!", zap.Any("err", err))
 		response.FailWithMessage("查询失败", c)
 	} else {
 		response.OkWithData(gin.H{"resport": resport}, c)
@@ -123,14 +144,14 @@ func GetSportList(c *gin.Context) {
 	var pageInfo request.SportSearch
 	_ = c.ShouldBindQuery(&pageInfo)
 	if err, list, total := service.GetSportInfoList(pageInfo); err != nil {
-	    global.GVA_LOG.Error("获取失败!", zap.Any("err", err))
-        response.FailWithMessage("获取失败", c)
-    } else {
-        response.OkWithDetailed(response.PageResult{
-            List:     list,
-            Total:    total,
-            Page:     pageInfo.Page,
-            PageSize: pageInfo.PageSize,
-        }, "获取成功", c)
-    }
+		global.GVA_LOG.Error("获取失败!", zap.Any("err", err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
 }
