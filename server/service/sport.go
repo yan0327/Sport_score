@@ -37,9 +37,12 @@ func UpdateSport(sport model.Sport) (err error) {
 // UpdateSportByHash 更新Sport记录
 // Author [piexlmax](https://github.com/piexlmax)
 /**/
-func FindSportByHash(Hash256 string) (err error, sport model.Sport) {
-	//err = global.GVA_DB.Where("Hash256 = ?", Hash256).First(&sport).Model("TransHash", TransHash)
-	err = global.GVA_DB.Model(&sport).Where("Hash256 = ?", Hash256).First(&sport).Error
+func FindSportByHash(hash256 string) (err error, sport model.Sport) {
+
+	//err = global.GVA_DB.Model(&model.Sport{}).Where("hash256 = ?", hash256).First(&sport).Error
+	err = global.GVA_DB.Where("`hash256` = ?", hash256).First(&sport).Error
+	//fmt.Println(hash256)
+	//err = global.GVA_DB.Model(&model.Sport{}).Where("hash256 = ?", "0xaca3f1b0a36e8ec51ace0ada8ff3a9d694720cf124c956016be9fac4cf855b63").First(&sport).Error
 	return
 }
 
@@ -116,6 +119,12 @@ func GetSportInfoList(info request.SportSearch) (err error, list interface{}, to
 	}
 	if info.ScoreThree != 0 {
 		db = db.Where("`score_three` = ?", info.ScoreThree)
+	}
+	if info.Hash256 != "" {
+		db = db.Where("`hash256` = ?", info.Hash256)
+	}
+	if info.TransHash != "" {
+		db = db.Where("`transhash` = ?", info.TransHash)
 	}
 	err = db.Count(&total).Error
 	err = db.Limit(limit).Offset(offset).Find(&sports).Error

@@ -327,6 +327,7 @@ export default {
       console.log(row)
       this.type = 'update'
       if (res.code === 0) {
+        console.log(res)
         this.formData = res.data.resport
         this.dialogFormVisible = true
       }

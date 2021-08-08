@@ -1,8 +1,17 @@
 import XLSX, { utils } from 'xlsx'
 //import sport from '@/view/sport'
-import {
+/*import {
     updateSport,
-    findSportm
+    findSportByHash
+  } from '@/api/sport'*/
+import {
+    createSport,
+    deleteSport,
+    deleteSportByIds,
+    updateSport,
+    findSport,
+    findSportByHash,
+    getSportList
   } from '@/api/sport'
 export let character = {
     school: {
@@ -166,13 +175,49 @@ const EXCEL = {
                     //obj.TransHash = transactionHash;
                     //console.log('transactionHash', obj)
                 })
-                .on('receipt',(receipt)=>{
-                    console.log({ receipt:receipt })
+                .on('receipt', async function(receipt) { 
+                    //console.log({ receipt:receipt })
                     //console.log({ receipt:events.transactionHash })
-                    let storagehash = receipt.transactionHash;
-                    console.log(storagehash);
+                    
                     let findhash = receipt.events.SaveEvidence.returnValues[1];
-                    console.log(findhash);
+                    let storagehash = receipt.transactionHash;
+                    //const res = await findSport({ ID: 73 })
+                    console.log(findhash)
+                    let findhash2 = JSON.stringify(findhash);
+                    console.log(findhash2)
+                    //findAndUpdate(findhash);
+                    const res = await findSportByHash({ Hash256: "0x8dcd4ffda87adae2bbee5bf71a0379b0bb5d91c1d903f4ba6d80c10af5e4fac1" })
+                    console.log(res)
+                    /*this.formData = res.data.resport;
+                    this.formData.transhash = storagehash;
+                    const res2 = await updateSport(this.formData);
+                    console.log(res2);
+                    console.log(storagehash) 
+                    this.formData = {
+                        school: '',
+                        class: '',
+                        testid: '',
+                        name: '',
+                        sex: '',
+                        totalScore: 0,
+                        processeValuation: 0,
+                        grade: '',
+                        itemone: '',
+                        gradeone: 0,
+                        scoreOne: 0,
+                        itemTwo: '',
+                        gradeTwo: 0,
+                        scoreTwo: 0,
+                        itemThree: '',
+                        gradeThree: 0,
+                        scoreThree: 0,
+                        hash256: '',
+                        transhash: '',
+                        
+                    }*/
+                    console.log(receipt) 
+                    
+
                 })
                 .on('error',(error, receipt)=>{
                     console.log({ error:error, receipt:receipt})
@@ -190,6 +235,38 @@ const EXCEL = {
         arr.body = content;
         return arr;
     },
+    findAndUpdate(findhash) {
+        
+        
+        console.log("res");
+        return;
+        /*this.formData = res.data.resport;
+        this.formData.transhash = storagehash;
+        const res2 = await  updateSport(this.formData);
+        console.log(res2);
+        this.formData = {
+            school: '',
+              class: '',
+              testid: '',
+              name: '',
+              sex: '',
+              totalScore: 0,
+              processeValuation: 0,
+              grade: '',
+              itemone: '',
+              gradeone: 0,
+              scoreOne: 0,
+              itemTwo: '',
+              gradeTwo: 0,
+              scoreTwo: 0,
+              itemThree: '',
+              gradeThree: 0,
+              scoreThree: 0,
+              hash256: '',
+              transhash: '',
+              
+          }*/
+      },
     /**
      * @description              本地读取文件的方法
      * @param {Object} file      文件流

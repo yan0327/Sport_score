@@ -103,7 +103,7 @@ func UpdateSport(c *gin.Context) {
 
 func FindSportByHash(c *gin.Context) {
 	var sport model.Sport
-	_ = c.ShouldBindJSON(&sport)
+	_ = c.ShouldBindQuery(&sport)
 	if err, resport := service.FindSportByHash(sport.Hash256); err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Any("err", err))
 		response.FailWithMessage("查询失败", c)
@@ -131,8 +131,6 @@ func FindSport(c *gin.Context) {
 		response.OkWithData(gin.H{"resport": resport}, c)
 	}
 }
-
-
 
 // GetSportList 分页获取Sport列表
 // @Tags Sport
