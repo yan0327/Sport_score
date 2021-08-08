@@ -91,7 +91,7 @@ func UpdateSport(c *gin.Context) {
 	}
 }
 
-// UpdateSportByHash 更新Sport
+// FindSportByHash 查找Sport
 // @Tags Sport
 // @Summary 更新Sport
 // @Security ApiKeyAuth
@@ -101,12 +101,12 @@ func UpdateSport(c *gin.Context) {
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /sport/updateSport [put]
 
-func UpdateSportByHash(c *gin.Context) {
+func FindSportByHash(c *gin.Context) {
 	var sport model.Sport
 	_ = c.ShouldBindJSON(&sport)
-	if err, resport := service.UpdateSportByHash(sport.Hash256 , sport.TransHash); err != nil {
-		global.GVA_LOG.Error("更新失败!", zap.Any("err", err))
-		response.FailWithMessage("更新失败", c)
+	if err, resport := service.FindSportByHash(sport.Hash256); err != nil {
+		global.GVA_LOG.Error("查询失败!", zap.Any("err", err))
+		response.FailWithMessage("查询失败", c)
 	} else {
 		response.OkWithData(gin.H{"resport": resport}, c)
 	}
