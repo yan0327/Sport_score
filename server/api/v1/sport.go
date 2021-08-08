@@ -91,6 +91,27 @@ func UpdateSport(c *gin.Context) {
 	}
 }
 
+// UpdateSportByHash 更新Sport
+// @Tags Sport
+// @Summary 更新Sport
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body model.Sport true "更新Sport"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
+// @Router /sport/updateSport [put]
+
+func UpdateSportByHash(c *gin.Context) {
+	var sport model.Sport
+	_ = c.ShouldBindJSON(&sport)
+	if err, resport := service.UpdateSportByHash(sport.Hash256 , sport.TransHash); err != nil {
+		global.GVA_LOG.Error("更新失败!", zap.Any("err", err))
+		response.FailWithMessage("更新失败", c)
+	} else {
+		response.OkWithData(gin.H{"resport": resport}, c)
+	}
+}
+
 // FindSport 用id查询Sport
 // @Tags Sport
 // @Summary 用id查询Sport
@@ -111,25 +132,7 @@ func FindSport(c *gin.Context) {
 	}
 }
 
-// FindSportByHash 用体育成绩哈希值查询Sport
-// @Tags Sport
-// @Summary 用体育成绩哈希值查询Sport
-// @Security ApiKeyAuth
-// @accept application/json
-// @Produce application/json
-// @Param data body model.Sport true "用id查询Sport"
-// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
-// @Router /sport/findSport [get]
-func FindSportByHash(c *gin.Context) {
-	var sport model.Sport
-	_ = c.ShouldBindQuery(&sport)
-	if err, resport := service.GetSport(sport.Hash256); err != nil {
-		global.GVA_LOG.Error("查询失败!", zap.Any("err", err))
-		response.FailWithMessage("查询失败", c)
-	} else {
-		response.OkWithData(gin.H{"resport": resport}, c)
-	}
-}
+
 
 // GetSportList 分页获取Sport列表
 // @Tags Sport

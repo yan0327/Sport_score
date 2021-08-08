@@ -14,6 +14,7 @@ func InitSportRouter(Router *gin.RouterGroup) {
 		SportRouter.DELETE("deleteSport", v1.DeleteSport) // 删除Sport
 		SportRouter.DELETE("deleteSportByIds", v1.DeleteSportByIds) // 批量删除Sport
 		SportRouter.PUT("updateSport", v1.UpdateSport)    // 更新Sport
+		SportRouter.PUT("updateSportByHash", v1.UpdateSportByHash)    // 更新SportHash
 		SportRouter.GET("findSport", v1.FindSport)        // 根据ID获取Sport
 		SportRouter.GET("getSportList", v1.GetSportList)  // 获取Sport列表
 	}

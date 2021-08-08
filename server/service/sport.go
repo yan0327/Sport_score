@@ -34,6 +34,15 @@ func UpdateSport(sport model.Sport) (err error) {
 	return err
 }
 
+// UpdateSportByHash 更新Sport记录
+// Author [piexlmax](https://github.com/piexlmax)
+/**/
+func UpdateSportByHash(Hash256 string,TransHash string) (err error, sport model.Sport) {
+	//err = global.GVA_DB.Where("Hash256 = ?", Hash256).First(&sport).Model("TransHash", TransHash)
+	global.GVA_DB.Model(&sport).Where("Hash256 = ?", Hash256).Update("TransHash", TransHash)
+	return
+}
+
 // GetSport 根据id获取Sport记录
 // Author [piexlmax](https://github.com/piexlmax)
 func GetSport(id uint) (err error, sport model.Sport) {
@@ -43,10 +52,10 @@ func GetSport(id uint) (err error, sport model.Sport) {
 
 // GetSportByHash 根据id获取Sport记录
 // Author [piexlmax](https://github.com/piexlmax)
-func GetSportByHash(Hash256 string) (err error, sport model.Sport) {
+/*func GetSportByHash(Hash256 string) (err error, sport model.Sport) {
 	err = global.GVA_DB.Where("Hash256 = ?", Hash256).First(&sport).Error
 	return
-}
+}*/
 
 // GetSportInfoList 分页获取Sport记录
 // Author [piexlmax](https://github.com/piexlmax)
