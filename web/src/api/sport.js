@@ -65,6 +65,22 @@ export const updateSport = (data) => {
 }
 
 // @Tags Sport
+// @Summary 更新SportByHash
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body model.Sport true "用Hash查询Sport"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
+// @Router /sport/updateSport [put]
+export const FindSportByHash = (params) => {
+  return service({
+    url: '/sport/findSportByHash',
+    method: 'get',
+    params
+  })
+}
+
+// @Tags Sport
 // @Summary 用id查询Sport
 // @Security ApiKeyAuth
 // @accept application/json
