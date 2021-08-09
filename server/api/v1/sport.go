@@ -104,7 +104,7 @@ func UpdateSport(c *gin.Context) {
 func FindSportByHash(c *gin.Context) {
 	var sport model.Sport
 	_ = c.ShouldBindQuery(&sport)
-	if err, resport := service.FindSportByHash(sport.Hash256); err != nil {
+	if err, resport := service.FindSportByHash(sport.Hash256, sport.TransHash); err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Any("err", err))
 		response.FailWithMessage("查询失败", c)
 	} else {

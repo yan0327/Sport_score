@@ -69,10 +69,10 @@ export const updateSport = (data) => {
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.Sport true "用Hash查询Sport"
+// @Param data body model.Sport true "用H查询Sport"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /sport/updateSport [put]
-export const FindSportByHash = (params) => {
+export const findSportByHash = (params) => {
   return service({
     url: '/sport/findSportByHash',
     method: 'get',

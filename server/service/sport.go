@@ -37,12 +37,12 @@ func UpdateSport(sport model.Sport) (err error) {
 // UpdateSportByHash 更新Sport记录
 // Author [piexlmax](https://github.com/piexlmax)
 /**/
-func FindSportByHash(hash256 string) (err error, sport model.Sport) {
+func FindSportByHash(hash256, transhash string) (err error, sport model.Sport) {
 
-	//err = global.GVA_DB.Model(&model.Sport{}).Where("hash256 = ?", hash256).First(&sport).Error
-	err = global.GVA_DB.Where("`hash256` = ?", hash256).First(&sport).Error
+	err = global.GVA_DB.Model(&model.Sport{}).Where("hash256 = ?", hash256).First(&sport).Update("transhash", transhash).Error
+	//err = global.GVA_DB.Where("hash256 = ?", hash256).First(&sport).Error
 	//fmt.Println(hash256)
-	//err = global.GVA_DB.Model(&model.Sport{}).Where("hash256 = ?", "0xaca3f1b0a36e8ec51ace0ada8ff3a9d694720cf124c956016be9fac4cf855b63").First(&sport).Error
+	//err = global.GVA_DB.Model(&model.Sport{}).Where("hash256 = ?", "0x8dcd4ffda87adae2bbee5bf71a0379b0bb5d91c1d903f4ba6d80c10af5e4fac1").First(&sport).Error
 	return
 }
 

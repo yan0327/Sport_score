@@ -183,17 +183,12 @@ const EXCEL = {
                     let storagehash = receipt.transactionHash;
                     //const res = await findSport({ ID: 73 })
                     console.log(findhash)
-                    let findhash2 = JSON.stringify(findhash);
-                    console.log(findhash2)
                     //findAndUpdate(findhash);
-                    const res = await findSportByHash({ Hash256: "0x8dcd4ffda87adae2bbee5bf71a0379b0bb5d91c1d903f4ba6d80c10af5e4fac1" })
-                    console.log(res)
-                    /*this.formData = res.data.resport;
+                    const res = await findSportByHash({ hash256: findhash , transhash: storagehash})
+                    /*res.data.resport;
                     this.formData.transhash = storagehash;
-                    const res2 = await updateSport(this.formData);
-                    console.log(res2);
-                    console.log(storagehash) 
-                    this.formData = {
+                    const res2 = await updateSport(this.formData);*/
+                    /*this.formData = {
                         school: '',
                         class: '',
                         testid: '',
