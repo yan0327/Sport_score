@@ -13,6 +13,8 @@ import {
     findSportByHash,
     getSportList
   } from '@/api/sport'
+import EthereumTx from "ethereumjs-tx";
+var sendcount = 0;
 export let character = {
     school: {
         text:"学校",
@@ -164,59 +166,79 @@ const EXCEL = {
                 const str = JSON.stringify(obj);
                 //console.log(str);
                 var strs = web3.utils.sha3(str);
-                window.myContract2.methods.saveEvidence(strs).send({from:window.defaultAccount})
+
+                const registryAddress = "0xb1d17b075d13ee1ec7a686d692809182ac9f19f0"
+                //智能合约对应Abi文件
+                var abi2 = require("./contract_abi2.json");
+                //私钥转换为Buffer
+                const privateKey =  Buffer.from('257b0cdc788702dda2221b06358d20bb7ab30256b7e1e3356c1bf0027bd091e4',"hex")//推荐使用cmd set命令然后env.process导出来
+                //私钥转换为账号                
+                const account = web3.eth.accounts.privateKeyToAccount("0x"+"257b0cdc788702dda2221b06358d20bb7ab30256b7e1e3356c1bf0027bd091e4");
+                //私钥对应的账号地地址
+                const address = account.address
+                
+            
+                //获取合约实例
+                var myContract = new web3.eth.Contract(abi2.abi,registryAddress)
+                /*
+                myContract.methods.saveEvidence(strs).send({from:address})
                 .on('transactionHash',(transactionHash)=>{
-                    /*return  new Promise((resolve,reject) => {
-                        resolve(transactionHash)
-                    }).then(resolve => {
-                        
-                    })*/
                     console.log('transactionHash', transactionHash)
                     //obj.TransHash = transactionHash;
                     //console.log('transactionHash', obj)
                 })
                 .on('receipt', async function(receipt) { 
-                    //console.log({ receipt:receipt })
+                    
                     //console.log({ receipt:events.transactionHash })
                     
                     let findhash = receipt.events.SaveEvidence.returnValues[1];
                     let storagehash = receipt.transactionHash;
-                    //const res = await findSport({ ID: 73 })
-                    console.log(findhash)
-                    //findAndUpdate(findhash);
                     const res = await findSportByHash({ hash256: findhash , transhash: storagehash})
-                    /*res.data.resport;
-                    this.formData.transhash = storagehash;
-                    const res2 = await updateSport(this.formData);*/
-                    /*this.formData = {
-                        school: '',
-                        class: '',
-                        testid: '',
-                        name: '',
-                        sex: '',
-                        totalScore: 0,
-                        processeValuation: 0,
-                        grade: '',
-                        itemone: '',
-                        gradeone: 0,
-                        scoreOne: 0,
-                        itemTwo: '',
-                        gradeTwo: 0,
-                        scoreTwo: 0,
-                        itemThree: '',
-                        gradeThree: 0,
-                        scoreThree: 0,
-                        hash256: '',
-                        transhash: '',
-                        
-                    }*/
-                    console.log(receipt) 
-                    
+                    console.log({ receipt:receipt })
 
                 })
                 .on('error',(error, receipt)=>{
                     console.log({ error:error, receipt:receipt})
-                })
+                })*/
+
+
+                /*
+                web3.eth.getTransactionCount(address).then(
+                    nonce => {
+                        
+                        sendcount = sendcount + 1
+                        console.log("nonce: ", sendcount)
+                        const txParams = {
+                            nonce: nonce + sendcount - 1,
+                            gasPrice: web3.utils.toHex(web3.utils.toWei('10','gwei')),
+                            gasLimit: web3.utils.toHex(210000),
+                            to: registryAddress,
+                            data: myContract.methods.saveEvidence(strs).encodeABI(), //ERC20转账
+                           
+                          }
+                          const tx = new EthereumTx(txParams)
+                        tx.sign(privateKey)
+                        const serializedTx = tx.serialize()
+                web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'))
+                    .on('transactionHash',(transactionHash)=>{
+                     console.log('transactionHash', transactionHash)
+                   })
+                   .on('receipt',async function(receipt) {
+                    let findhash = receipt.logs[0].data.substring(0,2) + receipt.logs[0].data.substring(194,);
+                    console.log(findhash)
+                    let storagehash = receipt.transactionHash;
+                    const res = await findSportByHash({ hash256: findhash , transhash: storagehash})
+                    console.log({ receipt:receipt })
+                   })
+                   .on('error',(error, receipt)=>{
+                     console.log({ error:error, receipt:receipt})
+                   })
+                          
+                    },
+                    e => console.log(e)
+                )*/
+                
+
                 content[i]["体育成绩哈希值"] = strs;
                 //content[i]["交易哈希"] = transactionHash;
                 obj.hash256 = strs;
