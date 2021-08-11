@@ -104,6 +104,7 @@ import {
 import infoList from '@/mixins/infoList'
 import uploadxlsx from '@/components/uploadxlsx'
 import Web3 from "web3";
+import EthereumTx from "ethereumjs-tx";
 
 export default {
   name: 'Sport',
@@ -182,6 +183,10 @@ export default {
     }
   },
   async mounted() {
+    web3 = new Web3(new Web3.providers.HttpProvider("https://kovan.infura.io/v3/e6b151ba42004b5ebce395b52fa4de91"));
+        //智能合约地址
+
+    /*
     if (window.ethereum) {
       window.web3 = new Web3(ethereum);
       try {
@@ -214,7 +219,8 @@ export default {
       console.error(
         "Non-Ethereum browser detected. You should consider trying MetaMask!"
       );
-    }
+    }*/
+  
   },
 }
 </script>
