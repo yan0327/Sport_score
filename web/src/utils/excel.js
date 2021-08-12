@@ -163,8 +163,11 @@ const EXCEL = {
                     type === "number" ? (v = Number(v)) : null;
                     obj[key] = v;
                 }
+                delete obj.transHash
+                delete obj.hash256
                 const str = JSON.stringify(obj);
-                //console.log(str);
+
+                console.log(str);
                 var strs = web3.utils.sha3(str);
 
                 const registryAddress = "0xb1d17b075d13ee1ec7a686d692809182ac9f19f0"
@@ -180,29 +183,9 @@ const EXCEL = {
             
                 //获取合约实例
                 var myContract = new web3.eth.Contract(abi2.abi,registryAddress)
-                /*
-                myContract.methods.saveEvidence(strs).send({from:address})
-                .on('transactionHash',(transactionHash)=>{
-                    console.log('transactionHash', transactionHash)
-                    //obj.TransHash = transactionHash;
-                    //console.log('transactionHash', obj)
-                })
-                .on('receipt', async function(receipt) { 
-                    
-                    //console.log({ receipt:events.transactionHash })
-                    
-                    let findhash = receipt.events.SaveEvidence.returnValues[1];
-                    let storagehash = receipt.transactionHash;
-                    const res = await findSportByHash({ hash256: findhash , transhash: storagehash})
-                    console.log({ receipt:receipt })
-
-                })
-                .on('error',(error, receipt)=>{
-                    console.log({ error:error, receipt:receipt})
-                })*/
 
 
-                /*
+                
                 web3.eth.getTransactionCount(address).then(
                     nonce => {
                         
@@ -236,7 +219,7 @@ const EXCEL = {
                           
                     },
                     e => console.log(e)
-                )*/
+                )
                 
 
                 content[i]["体育成绩哈希值"] = strs;
@@ -257,32 +240,6 @@ const EXCEL = {
         
         console.log("res");
         return;
-        /*this.formData = res.data.resport;
-        this.formData.transhash = storagehash;
-        const res2 = await  updateSport(this.formData);
-        console.log(res2);
-        this.formData = {
-            school: '',
-              class: '',
-              testid: '',
-              name: '',
-              sex: '',
-              totalScore: 0,
-              processeValuation: 0,
-              grade: '',
-              itemone: '',
-              gradeone: 0,
-              scoreOne: 0,
-              itemTwo: '',
-              gradeTwo: 0,
-              scoreTwo: 0,
-              itemThree: '',
-              gradeThree: 0,
-              scoreThree: 0,
-              hash256: '',
-              transhash: '',
-              
-          }*/
       },
     /**
      * @description              本地读取文件的方法
