@@ -106,10 +106,11 @@
       <el-table-column label="分数3" prop="scoreThree" width="120" /> 
       <el-table-column label="体育成绩哈希值" prop="hash256" width="240" /> 
       <el-table-column label="交易哈希" prop="transhash" width="240" /> 
-      <el-table-column label="按钮组">
+      <el-table-column label="按钮组" width="240">
         <template slot-scope="scope">
           <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="updateSport(scope.row)">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>
+          <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="CheckForData(scope.row)">校验</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -219,8 +220,11 @@ import {
   findSport,
   getSportList
 } from '@/api/sport' //  此处请自行替换地址
+import { Message } from "element-ui";
 import { formatTimeToStr } from '@/utils/date'
 import infoList from '@/mixins/infoList'
+import Web3 from "web3";
+import EthereumTx from "ethereumjs-tx";
 export default {
   name: 'Sport',
   mixins: [infoList],
@@ -274,6 +278,7 @@ export default {
     }
   },
   async created() {
+    web3 = new Web3(new Web3.providers.HttpProvider("https://kovan.infura.io/v3/e6b151ba42004b5ebce395b52fa4de91"));
     await this.getTableData()
     
   },
@@ -284,6 +289,19 @@ export default {
       this.pageSize = 10                 
       this.getTableData()
     },
+    open2() {
+        this.$message({
+          message: '该体育成绩未被篡改',
+          type: 'success'
+        });
+      },
+
+    open3() {
+        this.$message({
+          message: '该体育成绩已被篡改',
+          type: 'warning'
+        });
+      },
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
@@ -330,6 +348,89 @@ export default {
         console.log(res)
         this.formData = res.data.resport
         this.dialogFormVisible = true
+      }
+    },
+    async CheckForData(row) {
+      const res = await findSport({ ID: row.ID })
+      console.log(row)
+      this.type = 'update'
+      if (res.code === 0) {
+        console.log(res)
+        var hash256 = res.data.resport.hash256
+        let testData = this.formData;
+        testData = res.data.resport;
+        delete testData.CreatedAt;
+        delete testData.UpdatedAt;
+        delete testData.ID;
+        delete testData.hash256;
+        delete testData.transhash;
+
+        const str = JSON.stringify(testData);
+        console.log(str);
+        var strs = web3.utils.sha3(str);
+        console.log(strs)
+
+        const registryAddress = "0xb1d17b075d13ee1ec7a686d692809182ac9f19f0"
+                //智能合约对应Abi文件
+                var abi2 = require("@/utils/contract_abi2.json");
+                //私钥转换为Buffer
+                const privateKey =  Buffer.from('257b0cdc788702dda2221b06358d20bb7ab30256b7e1e3356c1bf0027bd091e4',"hex")//推荐使用cmd set命令然后env.process导出来
+                //私钥转换为账号                
+                const account = web3.eth.accounts.privateKeyToAccount("0x"+"257b0cdc788702dda2221b06358d20bb7ab30256b7e1e3356c1bf0027bd091e4");
+                //私钥对应的账号地地址
+                const address = account.address
+                //获取合约实例
+                var myContract = new web3.eth.Contract(abi2.abi,registryAddress)
+                web3.eth.getTransactionCount(address).then(
+                    nonce => {
+                        const txParams = {
+                            nonce: nonce,
+                            gasPrice: web3.utils.toHex(web3.utils.toWei('10','gwei')),
+                            gasLimit: web3.utils.toHex(210000),
+                            to: registryAddress,
+                            data: myContract.methods.getEvidence(strs).encodeABI(), //ERC20转账
+                           
+                          }
+                          const tx = new EthereumTx(txParams)
+                        tx.sign(privateKey)
+                        const serializedTx = tx.serialize()
+                web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'))
+                    .on('transactionHash',(transactionHash)=>{
+                     console.log('transactionHash', transactionHash)
+                   })
+                   .on('receipt',async function(receipt) {
+                    var rscode = parseInt(receipt.logs[0].data.substring(2,66),16);
+                    if (rscode == 3001){
+                      Message.success("该体育成绩未被篡改");
+                       /*this.$message({
+                        message: '该体育成绩未被篡改',
+                        type: 'success'
+                      });*/
+                    }else{
+                      Message.warning("该体育成绩已被篡改");
+                      /*
+                      this.$message({
+                        message: '该体育成绩已被篡改',
+                        type: 'warning'
+                      });*/
+                
+                    }
+                        
+
+                    /*
+                     ;
+                    let storagehash = receipt.transactionHash;
+                    const res = await findSportByHash({ hash256: findhash , transhash: storagehash})*/
+                    console.log({ receipt:receipt })
+                   })
+                   .on('error',(error, receipt)=>{
+                     console.log({ error:error, receipt:receipt})
+                   })
+                          
+                    },
+                    e => console.log(e)
+                )
+
       }
     },
     closeDialog() {
