@@ -3,7 +3,14 @@
     <div class="login_panle">
       <div class="login_panle_form">
         <div class="login_panle_form_title">
-          <img class="login_panle_form_title_logo" :src="$GIN_VUE_ADMIN.appLogo" alt=""><p class="login_panle_form_title_p">{{ $GIN_VUE_ADMIN.appName }}</p>
+         <el-select v-model="value" placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
         </div>
         <el-form
           ref="loginForm"
@@ -51,14 +58,19 @@
           <el-form-item>
             <el-button
               type="primary"
-              style="width: 46%"
+              style="width: 28%"
               @click="checkInit"
             >前往初始化</el-button>
             <el-button
               type="primary"
-              style="width: 46%;margin-left:8%"
+              style="width: 28%;margin-left:8%"
               @click="submitForm"
             >登 录</el-button>
+            <el-button
+              type="primary"
+              style="width: 28%;margin-left:8%"
+              @click="submitForm"
+            >学 生 注 册</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -111,7 +123,24 @@ export default {
         password: [{ validator: checkPassword, trigger: 'blur' }]
       },
       logVerify: '',
-      picPath: ''
+      picPath: '',
+       options: [{
+          value: '选项1',
+          label: '学生登录'
+        }, {
+          value: '选项2',
+          label: '校园管理'
+        }, {
+          value: '选项3',
+          label: '市管理员'
+        }, {
+          value: '选项4',
+          label: '省管理员'
+        }, {
+          value: '选项5',
+          label: '总管理员'
+        }],
+        value: ''
     }
   },
   created() {
