@@ -33,7 +33,26 @@ func Login(c *gin.Context) {
 		u := &model.SysUser{Username: l.Username, Password: l.Password}
 		if err, user := service.Login(u); err != nil {
 			global.GVA_LOG.Error("登陆失败! 用户名不存在或者密码错误!", zap.Any("err", err))
-			response.FailWithMessage("用户名不存在或者密码错误", c)
+			response.FailWithMessage("用户名不存在或者密码错误或登录方式错误", c)
+		} else {
+			tokenNext(c, *user)
+		}
+	} else {
+		response.FailWithMessage("验证码错误", c)
+	}
+}
+func Login2(c *gin.Context) {
+	var l request.Login
+	_ = c.ShouldBindJSON(&l)
+	if err := utils.Verify(l, utils.LoginVerify); err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if store.Verify(l.CaptchaId, l.Captcha, true) {
+		u := &model.SysUser{Username: l.Username, Password: l.Password}
+		if err, user := service.Login2(u); err != nil {
+			global.GVA_LOG.Error("登陆失败! 用户名不存在或者密码错误!", zap.Any("err", err))
+			response.FailWithMessage("用户名不存在或者密码错误或登录方式错误", c)
 		} else {
 			tokenNext(c, *user)
 		}

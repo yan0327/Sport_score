@@ -12,6 +12,14 @@ export const login = (data) => {
   })
 }
 
+export const login2 = (data) => {
+  return service({
+    url: '/base/login2',
+    method: 'post',
+    data: data
+  })
+}
+
 // @Summary 获取验证码
 // @Produce  application/json
 // @Param data body {username:"string",password:"string"}

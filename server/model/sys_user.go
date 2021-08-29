@@ -20,3 +20,6 @@ type SysUser struct {
 	ActiveColor string       `json:"activeColor" gorm:"default:#1890ff;comment:用户角色ID"` // 活跃颜色
 	BaseColor   string       `json:"baseColor" gorm:"default:#fff;comment:用户角色ID"`      // 基础颜色
 }
+type OnlyAuthor struct {
+	AuthorityId string
+}

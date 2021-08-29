@@ -1,4 +1,4 @@
-import { login } from '@/api/user'
+import { login, login2 } from '@/api/user'
 import { jsonInBlacklist } from '@/api/jwt'
 import router from '@/router/index'
 import { setUserInfo } from '@/api/user'
@@ -58,6 +58,24 @@ export const user = {
   actions: {
     async LoginIn({ commit, dispatch, rootGetters, getters }, loginInfo) {
       const res = await login(loginInfo)
+      if (res.code === 0) {
+        commit('setUserInfo', res.data.user)
+        commit('setToken', res.data.token)
+        await dispatch('router/SetAsyncRouter', {}, { root: true })
+        const asyncRouters = rootGetters['router/asyncRouters']
+        router.addRoutes(asyncRouters)
+        // const redirect = router.history.current.query.redirect
+        // console.log(redirect)
+        // if (redirect) {
+        //     router.push({ path: redirect })
+        // } else {
+        router.push({ name: getters['userInfo'].authority.defaultRouter })
+        // }
+        return true
+      }
+    },
+    async LoginIn2({ commit, dispatch, rootGetters, getters }, loginInfo) {
+      const res = await login2(loginInfo)
       if (res.code === 0) {
         commit('setUserInfo', res.data.user)
         commit('setToken', res.data.token)

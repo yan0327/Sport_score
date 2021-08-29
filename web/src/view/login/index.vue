@@ -59,12 +59,12 @@
             <el-button
               type="primary"
               style="width: 28%"
-              @click="checkInit"
+              @click="submitForm"
             >老 师 登 录</el-button>
             <el-button
               type="primary"
               style="width: 28%;margin-left:8%"
-              @click="submitForm"
+              @click="submitForm2"
             >学 生 登 录</el-button>
             <el-button
               type="primary"
@@ -203,6 +203,7 @@ export default {
   },
   methods: {
     ...mapActions('user', ['LoginIn']),
+    ...mapActions('user', ['LoginIn2']),
     async checkInit() {
       const res = await checkDB()
       if (res.code === 0) {
@@ -220,10 +221,31 @@ export default {
     async login() {
       return await this.LoginIn(this.loginForm)
     },
+    async login2() {
+      return await this.LoginIn2(this.loginForm)
+    },
     async submitForm() {
       this.$refs.loginForm.validate(async(v) => {
         if (v) {
           const flag = await this.login()
+          if (!flag) {
+            this.loginVerify()
+          }
+        } else {
+          this.$message({
+            type: 'error',
+            message: '请正确填写登录信息',
+            showClose: true
+          })
+          this.loginVerify()
+          return false
+        }
+      })
+    },
+    async submitForm2() {
+      this.$refs.loginForm.validate(async(v) => {
+        if (v) {
+          const flag = await this.login2()
           if (!flag) {
             this.loginVerify()
           }

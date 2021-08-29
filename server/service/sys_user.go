@@ -6,6 +6,8 @@ import (
 	"gin-vue-admin/model"
 	"gin-vue-admin/model/request"
 	"gin-vue-admin/utils"
+	"strconv"
+
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 )
@@ -38,6 +40,19 @@ func Login(u *model.SysUser) (err error, userInter *model.SysUser) {
 	var user model.SysUser
 	u.Password = utils.MD5V([]byte(u.Password))
 	err = global.GVA_DB.Where("username = ? AND password = ?", u.Username, u.Password).Preload("Authority").First(&user).Error
+	if user.AuthorityId == strconv.Itoa(4) {
+		err = errors.New("false")
+	}
+	return err, &user
+}
+
+func Login2(u *model.SysUser) (err error, userInter *model.SysUser) {
+	var user model.SysUser
+	u.Password = utils.MD5V([]byte(u.Password))
+	err = global.GVA_DB.Where("username = ? AND password = ?", u.Username, u.Password).Preload("Authority").First(&user).Error
+	if user.AuthorityId != strconv.Itoa(4) {
+		err = errors.New("false")
+	}
 	return err, &user
 }
 
