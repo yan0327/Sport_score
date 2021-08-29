@@ -60,16 +60,16 @@
               type="primary"
               style="width: 28%"
               @click="checkInit"
-            >前往初始化</el-button>
+            >老 师 登 录</el-button>
             <el-button
               type="primary"
               style="width: 28%;margin-left:8%"
               @click="submitForm"
-            >登 录</el-button>
+            >学 生 登 录</el-button>
             <el-button
               type="primary"
               style="width: 28%;margin-left:8%"
-              @click="submitForm"
+              @click="addUser"
             >学 生 注 册</el-button>
           </el-form-item>
         </el-form>
@@ -84,11 +84,35 @@
         </div>
         <div class="copyright">Copyright &copy; {{ curYear }} 💖 flipped-aurora</div>
       </div>
+       <el-dialog :visible.sync="addUserDialog" custom-class="user-dialog" append-to-body title="新增用户">
+      <el-form ref="userForm" :rules="rules" :model="userInfo">
+        <el-form-item label="用户名" label-width="80px" prop="username">
+          <el-input v-model="userInfo.username" />
+        </el-form-item>
+        <el-form-item label="密码" label-width="80px" prop="password">
+          <el-input v-model="userInfo.password" />
+        </el-form-item>
+        <el-form-item label="别名" label-width="80px" prop="nickName">
+          <el-input v-model="userInfo.nickName" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="closeAddUserDialog">取 消</el-button>
+        <el-button type="primary" @click="enterAddUserDialog">确 定</el-button>
+      </div>
+    </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
+import {
+  getUserList,
+  setUserAuthority,
+  register,
+  deleteUser
+} from '@/api/user'
+import { getAuthorityList } from '@/api/authority'
 import { mapActions } from 'vuex'
 import { captcha } from '@/api/user'
 import { checkDB } from '@/api/initdb'
@@ -112,6 +136,15 @@ export default {
     return {
       curYear: 0,
       lock: 'lock',
+      authOptions: [],
+      addUserDialog: false,
+      userInfo: {
+        username: '',
+        password: '',
+        nickName: '',
+        headerImg: '',
+        authorityId: '4'
+      },
       loginForm: {
         username: 'admin',
         password: '123456',
@@ -121,6 +154,22 @@ export default {
       rules: {
         username: [{ validator: checkUsername, trigger: 'blur' }],
         password: [{ validator: checkPassword, trigger: 'blur' }]
+      },
+      rules2: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 5, message: '最低5位字符', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入用户密码', trigger: 'blur' },
+          { min: 6, message: '最低6位字符', trigger: 'blur' }
+        ],
+        nickName: [
+          { required: true, message: '请输入用户昵称', trigger: 'blur' }
+        ],
+        authorityId: [
+          { required: true, message: '请选择用户角色', trigger: 'blur' }
+        ]
       },
       logVerify: '',
       picPath: '',
@@ -186,6 +235,24 @@ export default {
     },
     changeLock() {
       this.lock = this.lock === 'lock' ? 'unlock' : 'lock'
+    },
+    async enterAddUserDialog() {
+      this.$refs.userForm.validate(async valid => {
+        if (valid) {
+          const res = await register(this.userInfo)
+          if (res.code === 0) {
+            this.$message({ type: 'success', message: '创建成功' })
+          }
+          this.closeAddUserDialog()
+        }
+      })
+    },
+    closeAddUserDialog() {
+      this.$refs.userForm.resetFields()
+      this.addUserDialog = false
+    },
+    addUser() {
+      this.addUserDialog = true
     },
     loginVerify() {
       captcha({}).then((ele) => {
