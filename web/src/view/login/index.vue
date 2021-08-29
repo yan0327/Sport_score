@@ -85,7 +85,7 @@
         <div class="copyright">Copyright &copy; {{ curYear }} 💖 flipped-aurora</div>
       </div>
        <el-dialog :visible.sync="addUserDialog" custom-class="user-dialog" append-to-body title="新增用户">
-      <el-form ref="userForm" :rules="rules" :model="userInfo">
+      <el-form ref="userForm" :rules="rules2" :model="userInfo">
         <el-form-item label="用户名" label-width="80px" prop="username">
           <el-input v-model="userInfo.username" />
         </el-form-item>
@@ -94,6 +94,9 @@
         </el-form-item>
         <el-form-item label="别名" label-width="80px" prop="nickName">
           <el-input v-model="userInfo.nickName" />
+        </el-form-item>
+        <el-form-item label="身份证" label-width="80px" prop="idcard">
+          <el-input v-model="userInfo.idcard" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -143,7 +146,8 @@ export default {
         password: '',
         nickName: '',
         headerImg: '',
-        authorityId: '4'
+        authorityId: '4',
+        idcard: ''
       },
       loginForm: {
         username: 'admin',
@@ -167,8 +171,9 @@ export default {
         nickName: [
           { required: true, message: '请输入用户昵称', trigger: 'blur' }
         ],
-        authorityId: [
-          { required: true, message: '请选择用户角色', trigger: 'blur' }
+        idcard: [
+          { required: true, message: '请选择用户身份证号', trigger: 'blur' },
+          { min: 18, message: '最低18位字符', trigger: 'blur' }
         ]
       },
       logVerify: '',

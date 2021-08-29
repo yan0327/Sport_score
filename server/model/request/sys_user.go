@@ -9,6 +9,7 @@ type Register struct {
 	NickName    string `json:"nickName" gorm:"default:'QMPlusUser'"`
 	HeaderImg   string `json:"headerImg" gorm:"default:'http://www.henrongyi.top/avatar/lufu.jpg'"`
 	AuthorityId string `json:"authorityId" gorm:"default:888"`
+	Idcard      string `json:"idcard"`
 }
 
 // User login structure
