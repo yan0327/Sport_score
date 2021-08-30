@@ -20,6 +20,22 @@ export const login2 = (data) => {
   })
 }
 
+export const information = (data) => {
+  return service({
+    url: '/base/information',
+    method: 'post',
+    data: data
+  })
+}
+
+export const createInformation = (data) => {
+  return service({
+    url: '/base/createInformation',
+    method: 'post',
+    data: data
+  })
+}
+
 // @Summary 获取验证码
 // @Produce  application/json
 // @Param data body {username:"string",password:"string"}

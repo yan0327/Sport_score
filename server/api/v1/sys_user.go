@@ -61,6 +61,36 @@ func Login2(c *gin.Context) {
 	}
 }
 
+func Information(c *gin.Context) {
+	var l request.Login
+	_ = c.ShouldBindJSON(&l)
+	u := &model.SysUser{Username: l.Username, Password: l.Password}
+	err, _ := service.InformationVerification(u)
+	if err != nil {
+		response.FailWithMessage("信息不全，需要补充信息", c)
+	} else {
+		response.OkWithMessage("信息完整", c)
+	}
+}
+
+func CreateInformation(c *gin.Context) {
+	var sportStudent model.SportStudent
+	_ = c.ShouldBindJSON(&sportStudent)
+	u := &model.SysUser{Idcard: sportStudent.Idcard}
+	err, result := service.FindUserID(u)
+	if err != nil {
+		response.FailWithMessage("身份证信息填写错误，请重新确认身份证号", c)
+	}
+	sportStudent.SysUserID = result.ID
+	if err := service.CreateSportStudent(sportStudent); err != nil {
+		global.GVA_LOG.Error("创建失败!", zap.Any("err", err))
+		response.FailWithMessage("创建失败", c)
+	} else {
+
+		response.OkWithMessage("创建成功", c)
+	}
+}
+
 // 登录以后签发jwt
 func tokenNext(c *gin.Context, user model.SysUser) {
 	j := &middleware.JWT{SigningKey: []byte(global.GVA_CONFIG.JWT.SigningKey)} // 唯一签名

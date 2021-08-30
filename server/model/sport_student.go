@@ -18,11 +18,11 @@ type SportStudent struct {
 	Politicalstatus    string              `json:"politicalstatus" form:"politicalstatus" gorm:"column:politicalstatus;comment:政治面貌;type:varchar(191);"`
 	School             string              `json:"school" form:"school" gorm:"column:school;comment:学校;type:varchar(191);"`
 	Sex                string              `json:"sex" form:"sex" gorm:"column:sex;comment:性别;type:varchar(20);"`
-	SportSchoolID      int                 `json:"sportSchoolID" form:"sportSchoolID" gorm:"column:sportSchoolID;comment:学校ID;type:bigint;size:20;"`
+	SportSchoolID      uint                `json:"sportSchoolID" form:"sportSchoolID" gorm:"column:sportSchoolID;comment:学校ID;type:bigint;size:20;"`
 	Testid             string              `json:"testid" form:"testid" gorm:"column:testid;comment:学号;type:varchar(191);"`
 	SportStudentScores []SportStudentScore `json:"sportStudentScore" form:"sportStudentScore" gorm:"comment:学生成绩"` // 市名
 	SysUser            SysUser             `json:"sysuser" `
-	SysUserID          int                 `json:"sysuserid" gorm:"comment:用户ID"`
+	SysUserID          uint                `json:"sysuserid" gorm:"comment:用户ID"`
 }
 
 // TableName SportStudent 表名

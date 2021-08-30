@@ -150,8 +150,8 @@ export default {
         idcard: ''
       },
       loginForm: {
-        username: 'admin',
-        password: '123456',
+        username: 'qwerty',
+        password: 'qwerty',
         captcha: '',
         captchaId: ''
       },
@@ -240,7 +240,9 @@ export default {
           this.loginVerify()
           return false
         }
-      })
+      }
+      
+      )
     },
     async submitForm2() {
       this.$refs.loginForm.validate(async(v) => {

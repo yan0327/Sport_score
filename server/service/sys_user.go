@@ -56,6 +56,22 @@ func Login2(u *model.SysUser) (err error, userInter *model.SysUser) {
 	return err, &user
 }
 
+func InformationVerification(u *model.SysUser) (err error, userInter *model.SysUser) {
+	var user model.SysUser
+	u.Password = utils.MD5V([]byte(u.Password))
+	err = global.GVA_DB.Where("username = ? AND password = ?", u.Username, u.Password).Preload("Authority").First(&user).Error
+	var student model.SportStudent
+	err2 := global.GVA_DB.Where("idcard = ?", user.Idcard).First(&student).Error
+
+	return err2, &user
+}
+
+func FindUserID(u *model.SysUser) (err error, userInter *model.SysUser) {
+	var user model.SysUser
+	err2 := global.GVA_DB.Where("idcard = ?", u.Idcard).First(&user).Error
+	return err2, &user
+}
+
 //@author: [piexlmax](https://github.com/piexlmax)
 //@function: ChangePassword
 //@description: 修改用户密码

@@ -21,10 +21,15 @@ const baseRouters = [
     component: () => import('@/view/init/index')
   },
   {
+    path: '/initUser',
+    name: 'InitUser',
+    component: () => import('@/view/initUser/index')
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('@/view/login/index')
-  }
+  },
 ]
 
 // 需要通过后台数据来生成的组件

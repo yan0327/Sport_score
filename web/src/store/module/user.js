@@ -1,4 +1,4 @@
-import { login, login2 } from '@/api/user'
+import { login, login2, information } from '@/api/user'
 import { jsonInBlacklist } from '@/api/jwt'
 import router from '@/router/index'
 import { setUserInfo } from '@/api/user'
@@ -16,7 +16,7 @@ export const user = {
       activeColor: '#1890ff',
       baseColor: '#fff'
     },
-    token: ''
+    token: '',
   },
   mutations: {
     setUserInfo(state, userInfo) {
@@ -77,19 +77,26 @@ export const user = {
     async LoginIn2({ commit, dispatch, rootGetters, getters }, loginInfo) {
       const res = await login2(loginInfo)
       if (res.code === 0) {
-        commit('setUserInfo', res.data.user)
-        commit('setToken', res.data.token)
-        await dispatch('router/SetAsyncRouter', {}, { root: true })
-        const asyncRouters = rootGetters['router/asyncRouters']
-        router.addRoutes(asyncRouters)
-        // const redirect = router.history.current.query.redirect
-        // console.log(redirect)
-        // if (redirect) {
-        //     router.push({ path: redirect })
-        // } else {
-        router.push({ name: getters['userInfo'].authority.defaultRouter })
-        // }
-        return true
+        const res2 = await information(loginInfo)
+        if (res2.code == 0){
+          commit('setUserInfo', res.data.user)
+          commit('setToken', res.data.token)
+          await dispatch('router/SetAsyncRouter', {}, { root: true })
+          const asyncRouters = rootGetters['router/asyncRouters']
+          router.addRoutes(asyncRouters)
+          // const redirect = router.history.current.query.redirect
+          // console.log(redirect)
+          // if (redirect) {
+          //     router.push({ path: redirect })
+          // } else {
+          router.push({ name: getters['userInfo'].authority.defaultRouter })
+          // }
+          return true
+        }else{
+          router.push({ name: 'InitUser', replace: true })
+          return false
+        }
+        
       }
     },
     async LoginOut({ commit }) {
